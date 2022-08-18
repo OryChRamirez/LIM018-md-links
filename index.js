@@ -8,41 +8,20 @@ const ExistPath = (paths) => fs.existsSync(paths);
 
 const convertToAbsolute = (pathEntered) => (path.isAbsolute(pathEntered) ? pathEntered : path.resolve(pathEntered));
 
-// CONFIRMAR QUE SEA UN ARCHIVO MARKDOWN
+// CONFIRMACIÓN DE LA EXTENSIÓN DEL ARCHIVO
+const extension = (paths) => path.extname(paths);
 
-// if (ExistPath) {
-// CONVERTIR LA RUTA DE RELATIVA A ABSOLUTA
+// LEER EL ARCHIVO MARKDOWN
+const readFile = (file) => fs.readFileSync(file, 'UTF-8');
+const fileContent = (pathAbsolute) => readFile(pathAbsolute);
 
-//   const convertToAbsolute = (pathEntered) => (
-//     path.isAbsolute(pathEntered) ? pathEntered : path.resolve(pathEntered));
-//   console.log(convertToAbsolute(testPath));
-//   console.log('LA RUTA EXISTE');
-// } else {
-//   console.log('LA RUTA NO EXISTE');
-// }
+// EXTRAER LOS LINKS DEL ARCHIVO MARKDOWN
 
-// fs.readdir('./', (error, files) => {
-//   if (error) {
-//     throw error;
-//   }
-//   console.log(files);
-// });
-// SI EL ARCHIVO NO ES .MD RETORNA MSJ EN CONSOLA
-// const extension = path.extname(testPath);
-// if (extension === '.md') {
-//   fs.readFile(testPath, 'UTF-8', (error, contFile) => {
-//     if (error) {
-//       throw error;
-//     }
-//     console.log('CONTENIDO: ', contFile);
-//   });
-//   console.log(extension);
-// } else {
-//   console.log('El archivo no tiene una extensión markdown');
-// }
 // /\[([^\[]+)\](\(.*\))/gm     ------ regex
 
 module.exports = {
   ExistPath,
   convertToAbsolute,
+  extension,
+  fileContent,
 };
