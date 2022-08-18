@@ -1,26 +1,25 @@
 const fs = require('fs');
 const path = require('path');
+// VALIDACIÓN DE LA EXISTENCIA DE LA RUTA
 
-function markdown() {
-  const testPath = './prueba.md';
+const ExistPath = (paths) => fs.existsSync(paths);
 
-  // VALIDACIÓN DE LA EXISTENCIA DE LA RUTA
+// CONVERTIR RUTA RELATIVA A ABSOLUTA
 
-  const ExistPath = fs.existsSync(testPath);
-  console.log(ExistPath);
-  if (ExistPath) {
-    // CONVERTIR LA RUTA DE RELATIVA A ABSOLUTA
+const convertToAbsolute = (pathEntered) => (path.isAbsolute(pathEntered) ? pathEntered : path.resolve(pathEntered));
 
-    const convertToAbsolute = (pathEntered) => (
-      path.isAbsolute(pathEntered) ? pathEntered : path.resolve(pathEntered));
-    console.log(convertToAbsolute(testPath));
-    console.log('LA RUTA EXISTE');
-  } else {
-    console.log('LA RUTA NO EXISTE');
-  }
-}
+// CONFIRMAR QUE SEA UN ARCHIVO MARKDOWN
 
-markdown();
+// if (ExistPath) {
+// CONVERTIR LA RUTA DE RELATIVA A ABSOLUTA
+
+//   const convertToAbsolute = (pathEntered) => (
+//     path.isAbsolute(pathEntered) ? pathEntered : path.resolve(pathEntered));
+//   console.log(convertToAbsolute(testPath));
+//   console.log('LA RUTA EXISTE');
+// } else {
+//   console.log('LA RUTA NO EXISTE');
+// }
 
 // fs.readdir('./', (error, files) => {
 //   if (error) {
@@ -42,3 +41,8 @@ markdown();
 //   console.log('El archivo no tiene una extensión markdown');
 // }
 // /\[([^\[]+)\](\(.*\))/gm     ------ regex
+
+module.exports = {
+  ExistPath,
+  convertToAbsolute,
+};
