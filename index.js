@@ -22,10 +22,10 @@ const foundLinks = (fileCont) => {
   const expReg = /\[([^\[]+)\](\(.*\))/gm;
   const dataFile = fileCont.match(expReg);
   return dataFile.map((link) => {
-    const finalTxt = link.indexOf(']');
+    const txtRef = link.indexOf(']');
     return {
-      href: link.slice(finalTxt + 2, link.length - 1),
-      text: link.slice(1, finalTxt),
+      href: link.slice(txtRef + 2, link.length - 1),
+      text: link.slice(1, txtRef),
       file: fileCont,
     };
   });
