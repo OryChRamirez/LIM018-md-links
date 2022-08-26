@@ -1,38 +1,30 @@
 const fetch = require('node-fetch');
-const {
-  ExistPath,
-  convertToAbsolute,
-  extension,
-  fileContent,
-  foundLinks,
-  urlState,
-  recursionToGetFilesPath,
-} = require('../mdFunctions');
+const mdFunctions = require('../mdFunctions');
 
 jest.mock('node-fetch', () => jest.fn());
 
 describe('ExistPath', () => {
   it('Existe la ruta que se le pasa ', () => {
-    expect(ExistPath('test\\testFiles\\prueba.md')).toBe(true);
+    expect(mdFunctions.ExistPath('test\\testFiles\\prueba.md')).toBe(true);
   });
 
   it('convertToAbsolute', () => {
     const newLocal = 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\mdFunctions.js';
-    expect(convertToAbsolute('mdFunctions.js')).toBe(newLocal);
-    expect(convertToAbsolute(newLocal)).toBe(newLocal);
+    expect(mdFunctions.convertToAbsolute('mdFunctions.js')).toBe(newLocal);
+    expect(mdFunctions.convertToAbsolute(newLocal)).toBe(newLocal);
   });
 });
 
 describe('extension', () => {
   it('debería retornar .md si el archivo es markdown', () => {
-    expect(extension('prueba.md')).toBe('.md');
+    expect(mdFunctions.extension('prueba.md')).toBe('.md');
   });
 });
 
 describe('fileContent', () => {
   it('debería retornar el contenido del archivo markdown', () => {
     const fileCont = 'Este archivo es para verificar que el test esté pasando [Google](https://www.google.com/)';
-    expect(fileContent(convertToAbsolute('test/testFiles/prueba.md'))).toBe(fileCont);
+    expect(mdFunctions.fileContent(mdFunctions.convertToAbsolute('test/testFiles/prueba.md'))).toBe(fileCont);
   });
 });
 
@@ -46,7 +38,7 @@ describe('foundLinks', () => {
   ];
 
   it('debería retornar un arreglo con el contenido href, texto y contenido del archivo markdown', () => {
-    expect(foundLinks(fileContent('test/testFiles/prueba.md'))).toStrictEqual(objectResult);
+    expect(mdFunctions.foundLinks(mdFunctions.fileContent('test/testFiles/prueba.md'))).toStrictEqual(objectResult);
   });
 });
 
@@ -59,7 +51,7 @@ describe('urlState', () => {
 
   it('debería retornar el status, mensaje y true en caso de que el link esté ok', (done) => {
     fetch.mockResolvedValue({ status: 200, statusText: 'OK', ok: true });
-    urlState('https://noattack.com/proyectos/')
+    mdFunctions.urlState('https://noattack.com/proyectos/')
       .then((res) => {
         expect(res).toStrictEqual(resultOk);
         done();
@@ -73,11 +65,25 @@ describe('urlState', () => {
 
   it('debería retornar el status y el mensaje Fail', (done) => {
     fetch.mockRejectedValue({ status: 500, message: 'Fail' });
-    urlState('https://noattacm/proyectos/')
+    mdFunctions.urlState('https://noattacm/proyectos/')
       .then((res) => {
-        console.log(res);
         expect(res).toStrictEqual(resultFail);
         done();
+      });
+  });
+});
+
+describe('validatedUrl', () => {
+  it('status: 200 | message: ok', () => {
+    fetch.mockResolvedValue({ status: 200, statusText: 'OK', ok: true });
+    const resExpected = [
+      { status: 200, message: 'OK', ok: true },
+      { status: 200, message: 'OK', ok: true },
+      { status: 200, message: 'OK', ok: true },
+    ];
+    return mdFunctions.validatedUrl(mdFunctions.foundLinks(mdFunctions.fileContent(mdFunctions.convertToAbsolute('test\\testFiles\\prueba2.md'))))
+      .then((res) => {
+        expect(res).toStrictEqual(resExpected);
       });
   });
 });
@@ -88,6 +94,6 @@ describe('recursionToGetFiles', () => {
       'test\\testFiles\\prueba.md',
       'test\\testFiles\\prueba2.md',
     ];
-    expect(recursionToGetFilesPath('test/testFiles')).toStrictEqual(links);
+    expect(mdFunctions.recursionToGetFilesPath('test/testFiles')).toStrictEqual(links);
   });
 });

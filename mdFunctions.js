@@ -30,7 +30,7 @@ const fileContent = (pathAbsolute) => readFile(pathAbsolute);
 // EXTRAER LOS LINKS DEL ARCHIVO MARKDOWN
 const foundLinks = (fileCont) => {
   // eslint-disable-next-line no-useless-escape
-  const expRegMdLinks = /\[([^\[]+)\](\(.*\))/gm;
+  const expRegMdLinks = /(\[(.*?)\])?\(http(.*?)\)/gm;
   const dataFile = fileCont.match(expRegMdLinks);
   return dataFile.map((link) => {
     const txtRef = link.indexOf(']');
@@ -60,7 +60,6 @@ const urlState = (url) => new Promise((res) => {
 });
 
 // RECORRIDO PARA VALIDAR EL ESTADO DE LOS URL UNO POR UNO
-
 const validatedUrl = (arrayOfLinks) => new Promise((resolve) => {
   const newArrayOfLinks = [];
   arrayOfLinks.forEach((link) => newArrayOfLinks.push(urlState(link)));

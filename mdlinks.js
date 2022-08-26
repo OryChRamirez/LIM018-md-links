@@ -19,7 +19,7 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
 });
 
 mdLinks('test/testFiles/prueba2.md', { validate: true }).then((resolve) => {
-  console.log(resolve);
+  console.log('ESTE OTRO', resolve);
 });
 
 module.exports = {
