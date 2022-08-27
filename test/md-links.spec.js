@@ -21,69 +21,41 @@ describe('extension', () => {
   });
 });
 
-describe('fileContent', () => {
-  it('debería retornar el contenido del archivo markdown', () => {
-    const fileCont = 'Este archivo es para verificar que el test esté pasando [Google](https://www.google.com/)';
-    expect(mdFunctions.fileContent(mdFunctions.convertToAbsolute('test/testFiles/prueba.md'))).toBe(fileCont);
-  });
-});
-
-describe('foundLinks', () => {
-  const objectResult = [
-    {
-      href: 'https://www.google.com/',
-      text: 'Google',
-      file: 'Este archivo es para verificar que el test esté pasando [Google](https://www.google.com/)',
-    },
-  ];
-
-  it('debería retornar un arreglo con el contenido href, texto y contenido del archivo markdown', () => {
-    expect(mdFunctions.foundLinks(mdFunctions.fileContent('test/testFiles/prueba.md'))).toStrictEqual(objectResult);
-  });
-});
-
-describe('urlState', () => {
-  const resultOk = {
-    status: 200,
-    message: 'OK',
-    ok: true,
-  };
-
-  it('debería retornar el status, mensaje y true en caso de que el link esté ok', (done) => {
-    fetch.mockResolvedValue({ status: 200, statusText: 'OK', ok: true });
-    mdFunctions.urlState('https://noattack.com/proyectos/')
-      .then((res) => {
-        expect(res).toStrictEqual(resultOk);
-        done();
-      });
-  });
-
-  const resultFail = {
-    status: 500,
-    message: 'Fail',
-  };
-
-  it('debería retornar el status y el mensaje Fail', (done) => {
-    fetch.mockRejectedValue({ status: 500, message: 'Fail' });
-    mdFunctions.urlState('https://noattacm/proyectos/')
-      .then((res) => {
-        expect(res).toStrictEqual(resultFail);
-        done();
-      });
-  });
-});
-
 describe('validatedUrl', () => {
   it('status: 200 | message: ok', () => {
-    fetch.mockResolvedValue({ status: 200, statusText: 'OK', ok: true });
-    const resExpected = [
-      { status: 200, message: 'OK', ok: true },
-      { status: 200, message: 'OK', ok: true },
-      { status: 200, message: 'OK', ok: true },
-    ];
-    return mdFunctions.validatedUrl(mdFunctions.foundLinks(mdFunctions.fileContent(mdFunctions.convertToAbsolute('test\\testFiles\\prueba2.md'))))
+    fetch.mockResolvedValue({
+      status: 200,
+      message: 'OK',
+      ok: true,
+    });
+    const resExpected = [{
+      status: 200,
+      message: 'OK',
+      ok: true,
+      file: undefined,
+      href: 'https://www.google.com/',
+      text: 'Google',
+    }];
+    return mdFunctions.validatedUrl(mdFunctions.foundLinks(mdFunctions.fileContent(mdFunctions.convertToAbsolute('test\\testFiles\\prueba.md'))))
       .then((res) => {
         expect(res).toStrictEqual(resExpected);
+      });
+  });
+  it('status: 500 | message: fail', () => {
+    fetch.mockRejectedValue({
+      status: 500,
+      message: 'Fail',
+    });
+    const rejExpected = [{
+      status: 500,
+      message: 'Fail',
+      file: undefined,
+      href: 'http://community.laboratoria.la/c/js',
+      text: 'Foro de la comunidad',
+    }];
+    return mdFunctions.validatedUrl(mdFunctions.foundLinks(mdFunctions.fileContent(mdFunctions.convertToAbsolute('test\\testFiles\\prueba3.md'))))
+      .then((res) => {
+        expect(res).toStrictEqual(rejExpected);
       });
   });
 });
@@ -93,7 +65,32 @@ describe('recursionToGetFiles', () => {
     const links = [
       'test\\testFiles\\prueba.md',
       'test\\testFiles\\prueba2.md',
+      'test\\testFiles\\prueba3.md',
     ];
     expect(mdFunctions.recursionToGetFilesPath('test/testFiles')).toStrictEqual(links);
   });
 });
+
+// describe('StatsUrl', () => {
+//   it.only('debería retornar un objeto con la cantidad de links totales, unicos y rotos', () => {
+//     const arrOfLinks = [{
+//       href: 'https://www.google.com/',
+//       text: 'Google',
+//       file: undefined,
+//     },
+//     {
+//       href: 'http://community.laboratoria.la/c/js',
+//       text: 'Foro de la comunidad',
+//       file: undefined,
+//     },
+//     {
+//       href: 'https://www.facebook.com/',
+//       text: 'Facebook',
+//       file: undefined,
+//     }];
+
+//     const resExpected = { Total: 3, Unique: 3, Broken: 1 };
+//     console.log(mdFunctions.statsUrl(arrOfLinks));
+//     expect(mdFunctions.statsUrl(arrOfLinks)).toMatchObject(resExpected);
+//   });
+// });

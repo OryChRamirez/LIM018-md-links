@@ -1,0 +1,1 @@
+[Foro de la comunidad](http://community.laboratoria.la/c/js)

@@ -7,7 +7,7 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
       path = mdFunctions.convertToAbsolute(path);
       if (options.validate) {
         const contFile = mdFunctions.fileContent(path);
-        const arrayOfLinks = mdFunctions.foundLinks(contFile);
+        const arrayOfLinks = mdFunctions.foundLinks(contFile, path);
         mdFunctions.validatedUrl(arrayOfLinks).then((result) => {
           resolve(result);
         });
@@ -18,9 +18,11 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
   }
 });
 
-mdLinks('test/testFiles/prueba2.md', { validate: true }).then((resolve) => {
-  console.log('ESTE OTRO', resolve);
-});
+mdLinks('test/testFiles/prueba.md', { validate: true })
+  .then((resolve) => {
+    console.log('ESTE OTRO', resolve);
+  })
+  .catch((err) => console.log(err.message));
 
 module.exports = {
   mdLinks,

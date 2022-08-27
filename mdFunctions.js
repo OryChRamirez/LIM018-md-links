@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
 const path = require('path');
-
 // LEER LA RUTA
 const readDir = (paths) => fs.readdirSync(paths);
 
@@ -28,7 +27,7 @@ const readFile = (file) => fs.readFileSync(file, 'UTF-8');
 const fileContent = (pathAbsolute) => readFile(pathAbsolute);
 
 // EXTRAER LOS LINKS DEL ARCHIVO MARKDOWN
-const foundLinks = (fileCont) => {
+const foundLinks = (fileCont, paths) => {
   // eslint-disable-next-line no-useless-escape
   const expRegMdLinks = /(\[(.*?)\])?\(http(.*?)\)/gm;
   const dataFile = fileCont.match(expRegMdLinks);
@@ -37,36 +36,51 @@ const foundLinks = (fileCont) => {
     return {
       href: link.slice(txtRef + 2, link.length - 1),
       text: link.slice(1, txtRef),
-      file: fileCont,
+      file: paths,
     };
   });
 };
 
 // VERIFICAR EL ESTADO DEL URL PARA RETORNAR STATUS / MESAGGE / OK
-const urlState = (url) => new Promise((res) => {
+const urlState = (objUrl) => new Promise((resolve) => {
   const linksData = {};
-  fetch(url)
+  const result = fetch(objUrl)
     .then((response) => {
       linksData.status = response.status;
-      linksData.message = response.statusText;
+      linksData.message = response.message;
       linksData.ok = response.ok;
-      res(linksData);
+      return { ...objUrl, ...linksData };
     })
     .catch(() => {
       linksData.status = 500;
       linksData.message = 'Fail';
-      res(linksData);
+      return { ...objUrl, ...linksData };
     });
+  resolve(result);
 });
+
+// FUNCIÓN PARA VER LOS STATS DE LOS LINKS DE UN DOCUMENTO
+const statsUrl = (arrayOfLinks) => {
+  const total = arrayOfLinks.length;
+  const unique = new Set(arrayOfLinks.map((link) => link.href)).size;
+  const broken = arrayOfLinks.filter((link) => link.status >= 400).length;
+  return {
+    Total: total,
+    Unique: unique,
+    Broken: broken,
+  };
+};
 
 // RECORRIDO PARA VALIDAR EL ESTADO DE LOS URL UNO POR UNO
 const validatedUrl = (arrayOfLinks) => new Promise((resolve) => {
   const newArrayOfLinks = [];
   arrayOfLinks.forEach((link) => newArrayOfLinks.push(urlState(link)));
+  // console.log('LINKS', arrayOfLinks);
   Promise.all(newArrayOfLinks)
-    .then((result) => resolve(result))
-    .catch((err) => err);
+    .then((result) => resolve(result));
 });
+// validatedUrl(foundLinks(fileContent(convertToAbsolute('test\\testFiles\\prueba2d'))))
+//   .then((res) => res);
 
 // RECURSIVIDAD PARA OBTENER LOS ARCHIVOS
 const recursionToGetFilesPath = (paths) => {
@@ -95,4 +109,5 @@ module.exports = {
   recursionToGetFilesPath,
   validatedUrl,
   pathIsAbsolute,
+  statsUrl,
 };
