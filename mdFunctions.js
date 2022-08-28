@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
 const path = require('path');
+
 // LEER LA RUTA
 const readDir = (paths) => fs.readdirSync(paths);
 
@@ -47,7 +48,7 @@ const urlState = (objUrl) => new Promise((resolve) => {
   const result = fetch(objUrl)
     .then((response) => {
       linksData.status = response.status;
-      linksData.message = response.message;
+      linksData.message = 'OK';
       linksData.ok = response.ok;
       return { ...objUrl, ...linksData };
     })
@@ -63,11 +64,9 @@ const urlState = (objUrl) => new Promise((resolve) => {
 const statsUrl = (arrayOfLinks) => {
   const total = arrayOfLinks.length;
   const unique = new Set(arrayOfLinks.map((link) => link.href)).size;
-  const broken = arrayOfLinks.filter((link) => link.status >= 400).length;
   return {
     Total: total,
     Unique: unique,
-    Broken: broken,
   };
 };
 
@@ -75,12 +74,9 @@ const statsUrl = (arrayOfLinks) => {
 const validatedUrl = (arrayOfLinks) => new Promise((resolve) => {
   const newArrayOfLinks = [];
   arrayOfLinks.forEach((link) => newArrayOfLinks.push(urlState(link)));
-  // console.log('LINKS', arrayOfLinks);
   Promise.all(newArrayOfLinks)
     .then((result) => resolve(result));
 });
-// validatedUrl(foundLinks(fileContent(convertToAbsolute('test\\testFiles\\prueba2d'))))
-//   .then((res) => res);
 
 // RECURSIVIDAD PARA OBTENER LOS ARCHIVOS
 const recursionToGetFilesPath = (paths) => {
@@ -95,6 +91,8 @@ const recursionToGetFilesPath = (paths) => {
   });
   return arrayOfFiles.flat();
 };
+
+// RECOGER LAS OPCIONES QUE INGRESA EL USUARIO
 
 module.exports = {
   ExistPath,

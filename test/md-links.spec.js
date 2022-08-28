@@ -71,26 +71,22 @@ describe('recursionToGetFiles', () => {
   });
 });
 
-// describe('StatsUrl', () => {
-//   it.only('debería retornar un objeto con la cantidad de links totales, unicos y rotos', () => {
-//     const arrOfLinks = [{
-//       href: 'https://www.google.com/',
-//       text: 'Google',
-//       file: undefined,
-//     },
-//     {
-//       href: 'http://community.laboratoria.la/c/js',
-//       text: 'Foro de la comunidad',
-//       file: undefined,
-//     },
-//     {
-//       href: 'https://www.facebook.com/',
-//       text: 'Facebook',
-//       file: undefined,
-//     }];
+describe('statsUrl', () => {
+  const objLinks = [
+    { href: 'https://www.google.com/', text: 'Google', file: undefined },
+    {
+      href: 'http://community.laboratoria.la/c/js',
+      text: 'Foro de la comunidad',
+      file: undefined,
+    },
+    {
+      href: 'https://www.facebook.com/',
+      text: 'Facebook',
+      file: undefined,
+    }];
 
-//     const resExpected = { Total: 3, Unique: 3, Broken: 1 };
-//     console.log(mdFunctions.statsUrl(arrOfLinks));
-//     expect(mdFunctions.statsUrl(arrOfLinks)).toMatchObject(resExpected);
-//   });
-// });
+  const objResult = { Total: 3, Unique: 3 };
+  it('debería retornar la cantidad de links totales, unicos y rotos', () => {
+    expect(mdFunctions.statsUrl(objLinks)).toStrictEqual(objResult);
+  });
+});
