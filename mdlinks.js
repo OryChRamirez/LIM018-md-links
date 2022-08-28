@@ -27,21 +27,16 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
           if (options.validate) {
             newArrayOfLinks.push(mdFunctions.validatedUrl(arrayOfLinks));
           }
-          if (options.stats) {
-            let broken = 0;
-            if (newArrayOfLinks.status !== 200) {
-              // eslint-disable-next-line no-plusplus
-              broken++;
-            }
-            Object.assign(newArrayOfLinks, { Broken: broken });
-            newArrayOfLinks.push(mdFunctions.statsUrl(arrayOfLinks));
-          }
+          // if (options.stats) {
+          //   console.log(newArrayOfLinks.stats);
+          //   newArrayOfLinks.push(mdFunctions.statsUrl(arrayOfLinks));
+          //   // Object.assign(newArrayOfLinks, { Broken: broken });
+          // }
           return newArrayOfLinks;
         });
         Promise.all(newArrayOfLinks)
           .then((result) => {
-            const res = result;
-            resolve(res.flat());
+            resolve(result.flat());
           });
         // SI LA RUTA ES UN ARCHIVO
       } else if (mdFunctions.isAnFile(path)) {

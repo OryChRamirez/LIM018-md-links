@@ -64,9 +64,11 @@ const urlState = (objUrl) => new Promise((resolve) => {
 const statsUrl = (arrayOfLinks) => {
   const total = arrayOfLinks.length;
   const unique = new Set(arrayOfLinks.map((link) => link.href)).size;
+  const broken = 0;
   return {
     Total: total,
     Unique: unique,
+    Broken: broken,
   };
 };
 
