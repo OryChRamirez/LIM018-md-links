@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const mdFunctions = require('../mdFunctions');
+const mdFunctions = require('../src/mdFunctions');
 
 jest.mock('node-fetch', () => jest.fn());
 
@@ -85,8 +85,39 @@ describe('statsUrl', () => {
       file: undefined,
     }];
 
-  const objResult = { Total: 3, Unique: 3 };
+  const objResult = { total: 3, unique: 3 };
   it('debería retornar la cantidad de links totales, unicos y rotos', () => {
     expect(mdFunctions.statsUrl(objLinks)).toStrictEqual(objResult);
+  });
+});
+
+describe('foundLinks', () => {
+  const content = `[Google](https://www.google.com/)
+  [Foro de la comunidad](http://community.laboratoria.la/c/js)
+  [Facebook](https://www.facebook.com/)`;
+  const path = 'C:/Users/oryma/Desktop/CLASES/JAVASCRIPT/4Proyecto/LIM018-md-links/test/testFiles/prueba2.md';
+  const objLinks = [
+    {
+      href: 'https://www.google.com/',
+      text: 'Google',
+      file: 'C:/Users/oryma/Desktop/CLASES/JAVASCRIPT/4Proyecto/LIM018-md-links/test/testFiles/prueba2.md',
+    },
+    {
+      href: 'http://community.laboratoria.la/c/js',
+      text: 'Foro de la comunidad',
+      file: 'C:/Users/oryma/Desktop/CLASES/JAVASCRIPT/4Proyecto/LIM018-md-links/test/testFiles/prueba2.md',
+    },
+    {
+      href: 'https://www.facebook.com/',
+      text: 'Facebook',
+      file: 'C:/Users/oryma/Desktop/CLASES/JAVASCRIPT/4Proyecto/LIM018-md-links/test/testFiles/prueba2.md',
+    },
+  ];
+  it('debería retornar array con un objeto que contenga el href, texto y ruta del archivo', () => {
+    expect(mdFunctions.foundLinks(content, path)).toStrictEqual(objLinks);
+  });
+
+  it('debería retornar un objeto vacío si no hay links en la ruta', () => {
+    expect(mdFunctions.foundLinks('', 'ruta')).toStrictEqual({});
   });
 });

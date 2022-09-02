@@ -29,17 +29,21 @@ const fileContent = (pathAbsolute) => readFile(pathAbsolute);
 
 // EXTRAER LOS LINKS DEL ARCHIVO MARKDOWN
 const foundLinks = (fileCont, paths) => {
+  let objOfLinks = {};
   // eslint-disable-next-line no-useless-escape
   const expRegMdLinks = /(\[(.*?)\])?\(http(.*?)\)/gm;
   const dataFile = fileCont.match(expRegMdLinks);
-  return dataFile.map((link) => {
-    const txtRef = link.indexOf(']');
-    return {
-      href: link.slice(txtRef + 2, link.length - 1),
-      text: link.slice(1, txtRef),
-      file: paths,
-    };
-  });
+  if (dataFile !== null) {
+    return dataFile.map((link) => {
+      const txtRef = link.indexOf(']');
+      const href = link.slice(txtRef + 2, link.length - 1);
+      const text = link.slice(1, txtRef);
+      const file = paths;
+      objOfLinks = { href, text, file };
+      return objOfLinks;
+    });
+  }
+  return objOfLinks;
 };
 
 // VERIFICAR EL ESTADO DEL URL PARA RETORNAR STATUS / MESAGGE / OK
@@ -64,11 +68,9 @@ const urlState = (objUrl) => new Promise((resolve) => {
 const statsUrl = (arrayOfLinks) => {
   const total = arrayOfLinks.length;
   const unique = new Set(arrayOfLinks.map((link) => link.href)).size;
-  const broken = 0;
   return {
-    Total: total,
-    Unique: unique,
-    Broken: broken,
+    total,
+    unique,
   };
 };
 
@@ -93,8 +95,6 @@ const recursionToGetFilesPath = (paths) => {
   });
   return arrayOfFiles.flat();
 };
-
-// RECOGER LAS OPCIONES QUE INGRESA EL USUARIO
 
 module.exports = {
   ExistPath,
