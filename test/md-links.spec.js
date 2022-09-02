@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const mdFunctions = require('../src/mdFunctions');
+const mdLinks = require('../src/mdlinks');
 
 jest.mock('node-fetch', () => jest.fn());
 
@@ -119,5 +120,92 @@ describe('foundLinks', () => {
 
   it('debería retornar un objeto vacío si no hay links en la ruta', () => {
     expect(mdFunctions.foundLinks('', 'ruta')).toStrictEqual({});
+  });
+});
+
+describe('mdLinks caso default', () => {
+  it('Si la ruta no existe', () => {
+    mdLinks.mdLinks('test/test2/nuevo.m', { valdate: true }).catch((res) => expect(res).toStrictEqual(new Error('\n\n LA RUTA NO EXISTE \n\n')));
+  });
+
+  it('Si mdlinks se resuelve con validate y un archivo md', () => {
+    fetch.mockResolvedValue({
+      status: 200,
+      message: 'OK',
+      ok: true,
+    });
+    const resExpected = [{
+      status: 200,
+      message: 'OK',
+      ok: true,
+      file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\test2\\nuevo.md',
+      href: 'https://www.npmjs.com/package/chalk',
+      text: 'npm Chalk',
+    }];
+    mdLinks.mdLinks('test/test2/nuevo.md', { valdate: true }).then((res) => expect(res).toStrictEqual(resExpected));
+  });
+
+  it('Si mdlinks se resuelve con stats y un archivo md', () => {
+    fetch.mockResolvedValue({
+      status: 200,
+      message: 'OK',
+      ok: true,
+    });
+
+    const objResult = { total: 1, unique: 1 };
+    const result = mdLinks.mdLinks('test/test2/nuevo.md', { stats: true });
+    result.then((res) => expect(res).toStrictEqual(objResult));
+  });
+
+  it('si mdlinks se resuelve con validate y un directorio como ruta', () => {
+    fetch.mockResolvedValue({
+      status: 200,
+      message: 'OK',
+      ok: true,
+    });
+
+    const resExpected = [
+      {
+        href: 'https://www.google.com/',
+        text: 'Google',
+        file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\testFiles\\prueba.md',
+        status: 200,
+        message: 'OK',
+        ok: true,
+      },
+      {
+        href: 'https://www.google.com/',
+        text: 'Google',
+        file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\testFiles\\prueba2.md',
+        status: 200,
+        message: 'OK',
+        ok: true,
+      },
+      {
+        href: 'http://community.laboratoria.la/c/js',
+        text: 'Foro de la comunidad',
+        file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\testFiles\\prueba2.md',
+        status: 200,
+        message: 'OK',
+        ok: true,
+      },
+      {
+        href: 'https://www.facebook.com/',
+        text: 'Facebook',
+        file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\testFiles\\prueba2.md',
+        status: 200,
+        message: 'OK',
+        ok: true,
+      },
+      {
+        href: 'http://community.laboratoria.la/c/js',
+        text: 'Foro de la comunidad',
+        file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\testFiles\\prueba3.md',
+        status: 200,
+        message: 'OK',
+        ok: true,
+      },
+    ];
+    mdLinks.mdLinks('test/testFiles', { valdate: true }).then((res) => expect(res).toStrictEqual(resExpected));
   });
 });

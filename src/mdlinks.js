@@ -4,7 +4,7 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
   const newArrayOfFiles = [];
   // VERIFICAR QUE EXISTA EL PATH PRIMERO
   if (!mdFunctions.ExistPath(mdFunctions.convertToAbsolute(path))) {
-    reject(new Error('\n\n LA RUTA NO EXISTE \n'));
+    reject(new Error('\n\n LA RUTA NO EXISTE \n\n'));
   }
   // SI LA RUTA NO ES ABSOLUTA DEBE VOLVERLA ABSOLUTA
 
@@ -31,7 +31,6 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
         newArrayOfLinks.push(mdFunctions.validatedUrl(links4File));
       }
     });
-    // console.log(newArrayOfLinks, 'LOG LINEA 35 ');
     if (options.validate) {
       Promise.all(newArrayOfLinks)
         .then((result) => {
@@ -53,18 +52,14 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
           arrayOfLinks = mdFunctions.foundLinks(contFile, newPath);
         }
         if (arrayOfLinks[0] !== undefined) {
-          if (options.validate && !options.stats) {
+          if (options.validate) {
             newArrayOfLinks.push(mdFunctions.validatedUrl(arrayOfLinks));
           }
           if (options.stats) {
             newArrayOfLinks.push(mdFunctions.statsUrl(arrayOfLinks));
           }
-        }/*  else {
-          console.log('NO SE ENCONTRARON LINKS EN EL ARCHIVO');
-        } */
-      }/*  else {
-        console.log('NO ES UN ARCHIVO MARKDOWN');
-      } */
+        }
+      }
     }
     Promise.all(newArrayOfLinks)
       .then((result) => {
@@ -73,7 +68,7 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
   }
 });
 
-// mdLinks('test', { stats: true })
+// mdLinks('test/testFile', { validate: true })
 //   .then((resolve) => {
 //     console.log('console del RESOLVE --------', resolve);
 //   })
