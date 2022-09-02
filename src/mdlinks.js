@@ -41,8 +41,8 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
     if (options.stats) {
       Promise.all(newArrayOfLinks)
         .then((result) => {
-          const arrOfLinks = mdFunctions.statsUrl(result.flat());
-          resolve(arrOfLinks);
+          const arrayOfstats = mdFunctions.statsUrl(result.flat());
+          resolve(arrayOfstats);
         });
     }
     // SI LA RUTA ES UN ARCHIVO
@@ -59,12 +59,12 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
           if (options.stats) {
             newArrayOfLinks.push(mdFunctions.statsUrl(arrayOfLinks));
           }
-        } else {
-          console.log('NO HAY LINKS DENTRO DE LA RUTA INGRESADA');
-        }
-      } else {
+        }/*  else {
+          console.log('NO SE ENCONTRARON LINKS EN EL ARCHIVO');
+        } */
+      }/*  else {
         console.log('NO ES UN ARCHIVO MARKDOWN');
-      }
+      } */
     }
     Promise.all(newArrayOfLinks)
       .then((result) => {
