@@ -68,7 +68,7 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
   }
 });
 
-// mdLinks('test/testFile', { validate: true })
+// mdLinks('test/', { validate: true })
 //   .then((resolve) => {
 //     console.log('console del RESOLVE --------', resolve);
 //   })

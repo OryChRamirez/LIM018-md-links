@@ -162,5 +162,4 @@ module.exports = {
   mdLinksValidate,
   mdLinksCombinate,
   mdLinksStats,
-  useInfo,
 };
