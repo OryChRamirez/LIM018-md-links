@@ -1,4 +1,4 @@
-![md-links](C:\Users\oryma\Desktop\CLASES\JAVASCRIPT\4Proyecto\LIM018-md-links\src\img\mdlinks-logo.png)
+![md-links](https://github.com/OryChRamirez/LIM018-md-links/blob/main/src/img/mdlinks-logo.png)
 
 #Descripción
 
@@ -6,7 +6,7 @@ Markdown links es una biblioteca para examinar archivos tipo markdown, a través
 
 #Diagrama de Flujo
 
-![Diagrama de Fujo](C:\Users\oryma\Desktop\CLASES\JAVASCRIPT\4Proyecto\LIM018-md-links\src\img\diagramaDeFlujo.pdf)
+![Diagrama de Fujo](https://github.com/OryChRamirez/LIM018-md-links/blob/main/src/img/diagramaDeFlujo.pdf)
 
 #Instalación
 
@@ -14,14 +14,38 @@ Para instalar la biblioteca debe ejecutar el siguiente comando:
 
   npm md-links-ory-chacon -g
 
-![md-links](C:\Users\oryma\Desktop\CLASES\JAVASCRIPT\4Proyecto\LIM018-md-links\src\img\mdlinks-logo.png)
-
 Para ejecutar la línea de comandos en la terminal debe utilizar: 
 
   md-links <path-tofile> [options]
 
-Para visualizar la tabla de ayuda utilice la opción --h o -h luego de una ruta, o ingrese md-links sin ruta ni opciones
+Para visualizar la tabla de ayuda utilice la opción --help o -h luego de una ruta, o ingrese md-links sin ruta ni opciones.
 
-![help](LIM018-md-links\src\img\help.jpg)
+![help](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/help.jpg)
 
+Para verificar la versión instalada ingrese la opción --version o -v.
 
+![version](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/option-version.jpg)
+
+Para verificar el status HTTP a través de una consulta fetch, ingresar la opción --validate o -va. Se mostrará el href, status HTTP, Ok o Fail, text.
+
+![validate](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/option-validate.jpg)
+
+Para verificar los stats de los enlaces (totales y únicos) ingresar la opción --stats o -s.
+
+![stats](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/option-stats.jpg)
+
+Para verificar los stats  de los enlaces (totales, únicos y rotos) ingresar las opciones --validate o -va y --stats o -s (cualquier convinación de validate y stats es válida).
+
+![validate-and-stats](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/options-validate-stats.jpg)
+
+En caso de ingresar md-lins con una ruta pero sin opciones validate o stats se mostrará el href, text, y ruta de cada enlace
+
+![default](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/without-options.jpg)
+
+Si la ruta ingresada no existe: "LA RUTA NO EXISTE".
+
+Si la ruta no contiene enlaces: 
+
+Caso Validate: 
+
+![default](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/ruta-sin-enlaces.jpg)
