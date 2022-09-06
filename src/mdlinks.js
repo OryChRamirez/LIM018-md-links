@@ -10,7 +10,6 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
 
   if (!mdFunctions.pathIsAbsolute(path)) {
     // REASIGNAMOS EL VALOR AL PATH PARA QUE SEA ABSOLUTA
-    // eslint-disable-next-line no-param-reassign
     const newPath = mdFunctions.convertToAbsolute(path);
     // SI LA RUTA ES UN DIRECTORIO
     let arrayOfLinks = [];
@@ -68,7 +67,7 @@ const mdLinks = (path, options) => new Promise((resolve, reject) => {
   }
 });
 
-// mdLinks('test/testFile', { validate: true })
+// mdLinks('test/', { validate: true })
 //   .then((resolve) => {
 //     console.log('console del RESOLVE --------', resolve);
 //   })

@@ -1,6 +1,8 @@
 {
-  "name": "md-links-orychacon",
-  "version": "1.0.0",
+  "name": "md-links-ory-chacon",
+  "version": "1.1.0",
+  "description": "este módulo sirve para verificar el estado de los links en un archivo markdown",
+  "main": "src/mdlinks.js",
   "author": {
     "name": "Orayma Chacón",
     "url": "https://github.com/OryChRamirez",
@@ -16,6 +18,7 @@
     "start": "node src/mdlinks.js",
     "eslint": "eslint --ext .js test/",
     "pretest": "npm run eslint",
+    "mdLinks": "md-links",
     "test": "jest --coverage"
   },
   "dependencies": {
@@ -36,7 +39,12 @@
     "eslint-plugin-import": "^2.26.0",
     "jest": "28.1.0"
   },
+  "license": "MIT",
   "bin": {
-    "algo": "./src/cli.js"
+    "md-links": "./src/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OryChRamirez/LIM018-md-links"
   }
 }
