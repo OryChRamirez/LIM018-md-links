@@ -171,16 +171,23 @@ describe('mdLinks con la ruta inexistente', () => {
     });
   });
 
-  it('adaf', (done) => {
+  it('mdlinks con un solo archivo .md y validate true', (done) => {
     fetch.mockResolvedValue({
       status: 200,
       message: 'OK',
       ok: true,
     });
     const result = mdLinks.mdLinks('test/test2/nuevo.md', { validate: true });
-    // const objResult = '';
-    result.then(() => {
-      expect(true).toStrictEqual(true);
+    const objResult = [{
+      file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\test2\\nuevo.md',
+      href: 'https://www.npmjs.com/package/chalk',
+      message: 'OK',
+      ok: true,
+      status: 200,
+      text: 'npm Chalk',
+    }];
+    result.then((res) => {
+      expect(res).toStrictEqual(objResult);
       done();
     });
   });
