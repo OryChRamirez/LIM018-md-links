@@ -1,14 +1,14 @@
 ![md-links](https://github.com/OryChRamirez/LIM018-md-links/blob/main/src/img/mdlinks-logo.png)
 
-#Descripción
+# Descripción
 
 Markdown links es una biblioteca para examinar archivos tipo markdown, a través de rutas ingresadas a través de la línea de comando (CLI), las cuales pueden ser archivos unitarios o directorios que contengan archivos con extensión '.md'. Esta nos permite obtener reportes estadísticos de los enlaces encontrados, información sobre el estado de los links a través de peticiones HTTP, así como datos generales.
 
-#Diagrama de Flujo
+# Diagrama de Flujo
 
-![Diagrama de Fujo](https://github.com/OryChRamirez/LIM018-md-links/blob/main/src/img/diagramaDeFlujo.pdf)
+![Diagrama de Fujo](https://raw.githubusercontent.com/OryChRamirez/LIM018-md-links/main/src/img/diagramaDeFlujo.jpg)
 
-#Instalación
+# Instalación
 
 Para instalar la biblioteca debe ejecutar el siguiente comando:
 
