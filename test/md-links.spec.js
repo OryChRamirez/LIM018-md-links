@@ -101,8 +101,8 @@ jest.mock('../src/mdFunctions', () => {
   return mdFunctions;
 });
 
-it('Si mdlinks se resuelve con validate y un archivo md', () => {
-  mdLinks.mdLinks('test/', { valdate: true }).then((res) => {
+it('Si mdlinks se resuelve con validate y una ruta', () => {
+  mdLinks.mdLinks('test', { validate: true }).then((res) => {
     expect(res).toStrictEqual(arrayOfLinks);
   });
 });

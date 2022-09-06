@@ -118,16 +118,45 @@ describe('foundLinks', () => {
     expect(mdFunctions.foundLinks(content, path)).toStrictEqual(objLinks);
   });
 
-  it('debería retornar un objeto vacío si no hay links en la ruta', () => {
+  it('debería retornar un objeto vacío si no hay links en la ruta', (done) => {
     expect(mdFunctions.foundLinks('', 'ruta')).toStrictEqual({});
+    done();
   });
 });
 
-describe('mdLinks', () => {
-  it('Si la ruta no existe', () => {
-    mdLinks.mdLinks('./test/test2/nuevo.m', { valdate: true }).catch((res) => expect(res).toStrictEqual(new Error('\n\n LA RUTA NO EXISTE \n\n')));
+describe('mdLinks con la ruta inexistente', () => {
+  it('Si la ruta no existe', (done) => {
+    mdLinks.mdLinks('./test/test2/nuevo.m', { validate: true }).catch((res) => {
+      expect(res).toStrictEqual(new Error('\n\n LA RUTA NO EXISTE \n\n'));
+      done();
+    });
   });
-  it('Si mdlinks se resuelve con stats y un archivo md', () => {
+
+  it('si mdlinks se resuelve con validate', (done) => {
+    fetch.mockResolvedValue({
+      status: 200,
+      message: 'OK',
+      ok: true,
+    });
+
+    const objResult = [
+      {
+        href: 'https://www.npmjs.com/package/chalk',
+        text: 'npm Chalk',
+        file: 'C:\\Users\\oryma\\Desktop\\CLASES\\JAVASCRIPT\\4Proyecto\\LIM018-md-links\\test\\test2\\nuevo.md',
+        status: 200,
+        message: 'OK',
+        ok: true,
+      },
+    ];
+    const result = mdLinks.mdLinks('test/test2', { validate: true });
+    result.then((res) => {
+      expect(res).toStrictEqual(objResult);
+      done();
+    });
+  });
+
+  it('Si mdlinks se resuelve con stats y un archivo md', (done) => {
     fetch.mockResolvedValue({
       status: 200,
       message: 'OK',
@@ -138,6 +167,21 @@ describe('mdLinks', () => {
     const result = mdLinks.mdLinks('test/test2/nuevo.md', { stats: true });
     result.then((res) => {
       expect(res).toStrictEqual(objResult);
+      done();
+    });
+  });
+
+  it('adaf', (done) => {
+    fetch.mockResolvedValue({
+      status: 200,
+      message: 'OK',
+      ok: true,
+    });
+    const result = mdLinks.mdLinks('test/test2/nuevo.md', { validate: true });
+    // const objResult = '';
+    result.then(() => {
+      expect(true).toStrictEqual(true);
+      done();
     });
   });
 });
